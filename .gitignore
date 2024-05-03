@@ -1,6 +1,7 @@
 # Environmental Piles
 .venv
 venv
-
+.idea
+.DS_Store
 
 .env
