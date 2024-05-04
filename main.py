@@ -1,5 +1,7 @@
 import pandas as pd
-from pprint import pprint
+
+# Development
+# from pprint import pprint
 
 
 class Hotel:
@@ -31,20 +33,21 @@ class Hotel:
         else:
             return False
 
-    @staticmethod
-    def list_hotels(df):
+    @classmethod
+    def list_hotels(cls, hotel_dataframe):
         print('{0: <6}'.format("ID")
               + '{0: <30}'.format("Name")
               + '{0: <15}'.format("City")
               + '{0: <12}'.format("Capacity")
               + '{0: <12}'.format("Available"))
-        for row in df.iterrows():
+        for row in hotel_dataframe.iterrows():
             # pprint(row[1]['id'])
             print('{0: <6}'.format(str(row[1]['id']))
                   + '{0: <30}'.format(row[1]['name'])
                   + '{0: <15}'.format(row[1]['city'])
                   + '{0: <12}'.format(str(row[1]["capacity"]))
                   + '{0: <12}'.format(row[1]['available']))
+        print('\n')
 
 
 class ReservationTicket:
@@ -83,7 +86,6 @@ class SecureCreditCard(CreditCard):
             return True
         else:
             return False
-
 
 
 if __name__ == "__main__":
