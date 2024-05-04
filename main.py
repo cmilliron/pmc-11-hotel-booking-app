@@ -25,7 +25,6 @@ class Hotel:
             print(f"There was an error: {e}")
             return False
 
-
     def is_available(self):
         if self.available == 'yes':
             return True
@@ -61,16 +60,50 @@ class ReservationTicket:
             print("There was a problem.")
 
 
+class CreditCard:
+    def __init__(self, number):
+        self.number = number
+
+    def validate(self, expiration, holder, cvc):
+        card = {"number": self.number,
+                "expiration": expiration,
+                "holder": holder.upper(),
+                "cvc": cvc}
+        print(df_card)
+        if card in df_card:
+            return True
+        else:
+            return False
+
+
+class SecureCreditCard(CreditCard):
+    def authenticate(self, given_password):
+        password = df_cards_security.loc[df_cards_security['number'] == self.number, 'password'].squeeze()
+        if password == given_password:
+            return True
+        else:
+            return False
+
+
+
 if __name__ == "__main__":
     df = pd.read_csv('hotels.csv')
-
+    df_card = pd.read_csv('cards.csv', dtype=str).to_dict(orient='records')
+    df_cards_security = pd.read_csv('card_security.csv', dtype=str)
     Hotel.list_hotels(df)
     id = int(input('Enter the id of the hotel: '))
     hotel = Hotel(id, df)
     print(hotel.name, hotel.city)
     if hotel.is_available():
-        name = input('\nEnter your name: ')
-        reservation_ticket = ReservationTicket(name, hotel)
-        reservation_ticket.generate()
+        credit_card = SecureCreditCard(number="1234567890123456")
+        if credit_card.validate(expiration="12/26", holder="JOHN SMITH", cvc='123'):
+            if credit_card.authenticate(given_password="Dick"):
+                name = input('\nEnter your name: ')
+                reservation_ticket = ReservationTicket(name, hotel)
+                reservation_ticket.generate()
+            else:
+                print("Could not authenticate your credit card.")
+        else:
+            print('Something is wrong with your credit card.')
     else:
         print("\nHotel is not free.")
